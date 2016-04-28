@@ -1,0 +1,17 @@
+[package]
+name = "skew-heap"
+version = "0.1.0"
+authors = ["Andrew Paseltiner <apaseltiner@gmail.com>"]
+license = "MIT/Apache-2.0"
+homepage = "https://github.com/apasel422/skew-heap"
+repository = "https://github.com/apasel422/skew-heap"
+documentation = "https://apasel422.github.io/skew-heap/skew_heap"
+keywords = ["collection", "priority-queue"]
+description = "A priority queue based on a skew heap."
+
+[features]
+placement = []
+specialization = []
+
+[dev-dependencies]
+quickcheck = "0.2"

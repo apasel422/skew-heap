@@ -1,0 +1,18 @@
+language: rust
+sudo: false
+matrix:
+    include:
+        - rust: nightly
+          env: FEATURES="placement specialization"
+        - rust: beta
+          env: FEATURES=""
+        - rust: stable
+          env: FEATURES=""
+script:
+    - cargo build --features "$FEATURES"
+    - cargo test --features "$FEATURES"
+    - cargo doc --features "$FEATURES" --no-deps
+after_success: |
+    [ $TRAVIS_TAG ] &&
+    [ $TRAVIS_RUST_VERSION == nightly ] &&
+    bash deploy-docs.sh
