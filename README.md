@@ -8,7 +8,7 @@ To use `skew-heap` with Cargo, add this to `Cargo.toml`:
 
 ```toml
 [dependencies]
-pairing_heap = "0.1"
+skew_heap = "0.1"
 ```
 
 and this to the crate root:
