@@ -85,8 +85,6 @@ impl<T: Ord> SkewHeap<T> {
 
     /// Moves all items from the given heap into the heap.
     ///
-    /// Once specialization is stable, this method will be removed in favor of `Extend::extend`.
-    ///
     /// # Examples
     ///
     /// ```
