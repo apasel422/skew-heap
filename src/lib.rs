@@ -381,6 +381,15 @@ impl<T> Debug for IntoIter<T> {
     }
 }
 
+impl<T> Default for IntoIter<T> {
+    fn default() -> Self {
+        IntoIter {
+            nodes: Nodes { node: None },
+            len: 0,
+        }
+    }
+}
+
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
 
@@ -437,6 +446,15 @@ impl<'a, T> Clone for Iter<'a, T> {
 impl<'a, T> Debug for Iter<'a, T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Iter").field("len", &self.len).finish()
+    }
+}
+
+impl<'a, T> Default for Iter<'a, T> {
+    fn default() -> Self {
+        Iter {
+            nodes: vec![],
+            len: 0,
+        }
     }
 }
 
