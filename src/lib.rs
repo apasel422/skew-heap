@@ -1,7 +1,6 @@
 //! Skew heaps.
 
 #![deny(missing_docs)]
-#![cfg_attr(feature = "placement", feature(placement_in, placement_new_protocol))]
 #![cfg_attr(feature = "specialization", feature(specialization))]
 
 use std::fmt::{self, Debug};
@@ -484,68 +483,6 @@ impl<'a, T> ExactSizeIterator for Iter<'a, T> {
         self.len
     }
 }
-
-#[cfg(feature = "placement")]
-mod placement {
-    use std::boxed::IntermediateBox;
-    use std::{ops, ptr};
-    use super::{Node, SkewHeap};
-
-    /// A place for insertion into a `SkewHeap`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// #![feature(placement_in_syntax)]
-    ///
-    /// use skew_heap::SkewHeap;
-    ///
-    /// let mut h = SkewHeap::new();
-    ///
-    /// &mut h <- 5;
-    /// &mut h <- 2;
-    /// &mut h <- 4;
-    ///
-    /// assert_eq!(h.len(), 3);
-    /// assert_eq!(h.pop(), Some(5));
-    /// assert_eq!(h.pop(), Some(4));
-    /// assert_eq!(h.pop(), Some(2));
-    /// assert_eq!(h.pop(), None);
-    /// ```
-    #[must_use = "places do nothing unless used with placement syntax"]
-    pub struct Place<'a, T: 'a + Ord> {
-        heap: &'a mut SkewHeap<T>,
-        node: IntermediateBox<Node<T>>,
-    }
-
-    impl<'a, T: Ord> ops::Placer<T> for &'a mut SkewHeap<T> {
-        type Place = Place<'a, T>;
-
-        fn make_place(self) -> Place<'a, T> {
-            Place { heap: self, node: ops::BoxPlace::make_place() }
-        }
-    }
-
-    impl<'a, T: Ord> ops::Place<T> for Place<'a, T> {
-        fn pointer(&mut self) -> *mut T {
-            unsafe { &mut (*self.node.pointer()).item }
-        }
-    }
-
-    impl<'a, T: Ord> ops::InPlace<T> for Place<'a, T> {
-        type Owner = ();
-
-        unsafe fn finalize(self) {
-            let mut node = self.node.finalize();
-            ptr::write(&mut node.l, None);
-            ptr::write(&mut node.r, None);
-            self.heap.push_node(node);
-        }
-    }
-}
-
-#[cfg(feature = "placement")]
-pub use placement::Place;
 
 #[allow(dead_code)]
 fn assert_covariant() {
