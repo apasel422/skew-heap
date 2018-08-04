@@ -2,7 +2,7 @@
 
 A priority queue based on a skew heap.
 
-Documentation is available at https://apasel422.github.io/skew-heap/skew_heap.
+Documentation is available at https://docs.rs/skew-heap/.
 
 To use `skew-heap` with Cargo, add this to `Cargo.toml`:
 
